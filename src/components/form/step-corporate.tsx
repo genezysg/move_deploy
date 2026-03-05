@@ -23,7 +23,7 @@ const schema = z
     had_investment_round: z.boolean({ message: "Selecione uma opção" }),
     investment_rounds_count: z.number().int().min(1, "Mínimo 1 rodada").optional(),
     founders_equity_pct: z
-      .number({ invalid_type_error: "Informe um valor" })
+      .number({ error: "Informe um valor" })
       .int()
       .min(1, "Mínimo 1%")
       .max(100, "Máximo 100%"),

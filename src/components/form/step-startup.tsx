@@ -53,7 +53,7 @@ const schema = z
         message: "CNPJ inválido",
       }),
     founding_year: z
-      .number({ invalid_type_error: "Informe um ano válido" })
+      .number({ error: "Informe um ano válido" })
       .int()
       .min(1900, "Ano inválido")
       .max(CURRENT_YEAR, `Máximo ${CURRENT_YEAR}`),
@@ -65,7 +65,7 @@ const schema = z
     business_description: z.string().min(20, "Mínimo 20 caracteres"),
     current_revenue: z.string().optional(),
     team_size: z
-      .number({ invalid_type_error: "Informe um número válido" })
+      .number({ error: "Informe um número válido" })
       .int()
       .min(1, "Mínimo 1 pessoa"),
   })
