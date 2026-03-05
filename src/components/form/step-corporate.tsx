@@ -4,7 +4,7 @@ import { useRef, useState } from "react"
 import { useForm, Controller, useWatch } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { ArrowRight, Check, Paperclip, X } from "lucide-react"
+import { ArrowLeft, ArrowRight, Check, Paperclip, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -63,10 +63,11 @@ export interface CorporateData {
 
 interface Props {
   onNext: (data: CorporateData) => void
+  onBack?: () => void
   defaultValues?: Partial<CorporateFormValues>
 }
 
-export function StepCorporate({ onNext, defaultValues }: Props) {
+export function StepCorporate({ onNext, onBack, defaultValues }: Props) {
   const [pitchDeckFile, setPitchDeckFile] = useState<File | null>(null)
   const [fileError, setFileError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -120,7 +121,7 @@ export function StepCorporate({ onNext, defaultValues }: Props) {
           control={control}
           name="had_investment_round"
           render={({ field }) => (
-            <div className="flex flex-col gap-2">
+            <div className="flex gap-2">
               {[
                 { label: "Sim", value: true },
                 { label: "Não", value: false },
@@ -133,7 +134,7 @@ export function StepCorporate({ onNext, defaultValues }: Props) {
                     if (!opt.value) setValue("investment_rounds_count", undefined)
                   }}
                   className={cn(
-                    "flex items-center gap-2 rounded-md border px-4 py-2.5 text-left text-sm transition-colors",
+                    "flex-1 flex items-center justify-center gap-2 rounded-md border px-4 py-2.5 text-sm transition-colors",
                     field.value === opt.value
                       ? "border-primary bg-primary/10 text-foreground"
                       : "border-border text-muted-foreground hover:border-primary/40 hover:text-foreground"
@@ -266,11 +267,22 @@ export function StepCorporate({ onNext, defaultValues }: Props) {
         )}
       </div>
 
-      <div className="pt-2">
+      <div className="pt-2 flex gap-3">
+        {onBack && (
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onBack}
+            className="flex-1 rounded-full py-5 text-sm font-semibold transition-all"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Voltar
+          </Button>
+        )}
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="w-full rounded-full bg-primary py-5 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all"
+          className="flex-1 rounded-full bg-primary py-5 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all"
         >
           Continuar
           <ArrowRight className="ml-2 h-4 w-4" />

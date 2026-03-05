@@ -3,7 +3,7 @@
 import { useForm, useFieldArray, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { ArrowRight, Check, Plus, Trash2 } from "lucide-react"
+import { ArrowLeft, ArrowRight, Check, Plus, Trash2 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -49,11 +49,12 @@ const EMPTY_MEMBER: MemberData = {
 
 interface Props {
   onNext: (data: MemberData[]) => void
+  onBack?: () => void
   defaultValues?: TeamFormValues
   founderMember?: { member_name: string; member_linkedin?: string }
 }
 
-export function StepTeam({ onNext, defaultValues, founderMember }: Props) {
+export function StepTeam({ onNext, onBack, defaultValues, founderMember }: Props) {
   const initialMembers = defaultValues?.members ?? [
     {
       ...EMPTY_MEMBER,
@@ -211,11 +212,22 @@ export function StepTeam({ onNext, defaultValues, founderMember }: Props) {
         Adicionar membro
       </button>
 
-      <div className="pt-2">
+      <div className="pt-2 flex gap-3">
+        {onBack && (
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onBack}
+            className="flex-1 rounded-full py-5 text-sm font-semibold transition-all"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Voltar
+          </Button>
+        )}
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="w-full rounded-full bg-primary py-5 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all"
+          className="flex-1 rounded-full bg-primary py-5 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all"
         >
           Continuar
           <ArrowRight className="ml-2 h-4 w-4" />

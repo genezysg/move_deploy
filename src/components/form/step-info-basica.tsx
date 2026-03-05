@@ -203,7 +203,7 @@ export function StepInfoBasica({ onNext, defaultValues, duplicateWarning }: Prop
           control={control}
           name="internal_referral"
           render={({ field }) => (
-            <div className="flex flex-col gap-2">
+            <div className="flex gap-2">
               {MONTREAL_LINK_OPTIONS.map((option) => (
                 <button
                   key={String(option.value)}
@@ -213,7 +213,7 @@ export function StepInfoBasica({ onNext, defaultValues, duplicateWarning }: Prop
                     if (!option.value) setValue("referral_name", undefined)
                   }}
                   className={cn(
-                    "rounded-md border px-4 py-2.5 text-left text-sm transition-colors",
+                    "flex-1 rounded-md border px-3 py-1.5 text-center text-sm transition-colors",
                     field.value === option.value
                       ? "border-primary bg-primary/10 text-foreground"
                       : "border-border text-muted-foreground hover:border-primary/40 hover:text-foreground"

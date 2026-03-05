@@ -3,7 +3,7 @@
 import { useForm, Controller, useWatch } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { ArrowRight, Check } from "lucide-react"
+import { ArrowLeft, ArrowRight, Check } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -96,10 +96,11 @@ export interface StartupData {
 
 interface Props {
   onNext: (data: StartupData) => void
+  onBack?: () => void
   defaultValues?: Partial<StartupFormValues>
 }
 
-export function StepStartup({ onNext, defaultValues }: Props) {
+export function StepStartup({ onNext, onBack, defaultValues }: Props) {
   const {
     register,
     control,
@@ -258,13 +259,13 @@ export function StepStartup({ onNext, defaultValues }: Props) {
       </div>
 
       {/* Estágio */}
-      <div className="space-y-2">
-        <Label>Qual o Estágio da sua Startup?</Label>
+      <div className="space-y-1.5">
+        <Label htmlFor="stage">Qual o Estágio da sua Startup?</Label>
         <Controller
           control={control}
           name="stage"
           render={({ field }) => (
-            <div className="flex flex-col gap-2">
+            <div className={cn("rounded-md border overflow-y-auto max-h-[6.5rem] divide-y", errors.stage ? "border-destructive" : "border-input")}>
               {STAGES.map((s) => (
                 <button
                   key={s.label}
@@ -275,14 +276,14 @@ export function StepStartup({ onNext, defaultValues }: Props) {
                     if (!revenueStages.includes(s.label)) setValue("current_revenue", undefined)
                   }}
                   className={cn(
-                    "rounded-md border px-4 py-2.5 text-left transition-colors",
+                    "w-full px-3 py-2 text-left transition-colors",
                     field.value === s.label
-                      ? "border-primary bg-primary/10 text-foreground"
-                      : "border-border text-muted-foreground hover:border-primary/40 hover:text-foreground"
+                      ? "bg-primary/10 text-foreground"
+                      : "text-foreground hover:bg-muted"
                   )}
                 >
                   <span className="text-sm font-medium">{s.label}</span>
-                  <span className="block text-xs text-muted-foreground mt-0.5">{s.description}</span>
+                  <span className="block text-xs text-muted-foreground">{s.description}</span>
                 </button>
               ))}
             </div>
@@ -341,11 +342,22 @@ export function StepStartup({ onNext, defaultValues }: Props) {
         )}
       </div>
 
-      <div className="pt-2">
+      <div className="pt-2 flex gap-3">
+        {onBack && (
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onBack}
+            className="flex-1 rounded-full py-5 text-sm font-semibold transition-all"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Voltar
+          </Button>
+        )}
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="w-full rounded-full bg-primary py-5 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all"
+          className="flex-1 rounded-full bg-primary py-5 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all"
         >
           Continuar
           <ArrowRight className="ml-2 h-4 w-4" />

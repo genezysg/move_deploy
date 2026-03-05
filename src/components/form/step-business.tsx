@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { ArrowRight } from "lucide-react"
+import { ArrowLeft, ArrowRight } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -34,12 +34,13 @@ export interface BusinessData {
 
 interface Props {
   onNext: (data: BusinessData) => void
+  onBack?: () => void
   defaultValues?: Partial<BusinessFormValues>
   hasRevenue: boolean
   stage: string
 }
 
-export function StepBusiness({ onNext, defaultValues, hasRevenue, stage }: Props) {
+export function StepBusiness({ onNext, onBack, defaultValues, hasRevenue, stage }: Props) {
   const {
     register,
     handleSubmit,
@@ -150,11 +151,22 @@ export function StepBusiness({ onNext, defaultValues, hasRevenue, stage }: Props
         </div>
       )}
 
-      <div className="pt-2">
+      <div className="pt-2 flex gap-3">
+        {onBack && (
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onBack}
+            className="flex-1 rounded-full py-5 text-sm font-semibold transition-all"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Voltar
+          </Button>
+        )}
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="w-full rounded-full bg-primary py-5 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all"
+          className="flex-1 rounded-full bg-primary py-5 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all"
         >
           Continuar
           <ArrowRight className="ml-2 h-4 w-4" />

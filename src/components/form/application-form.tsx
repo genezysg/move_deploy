@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { ArrowLeft } from "lucide-react"
 import { StepInfoBasica, type InfoBasicaData } from "./step-info-basica"
 import { StepStartup, type StartupData } from "./step-startup"
 import { StepBusiness, type BusinessData } from "./step-business"
@@ -196,28 +195,17 @@ export function ApplicationForm() {
         </p>
       </div>
 
-      {/* Back button (hidden on step 1) */}
-      {currentStep > 1 && (
-        <button
-          type="button"
-          onClick={() => setCurrentStep((s) => s - 1)}
-          className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Voltar
-        </button>
-      )}
-
       {/* Step content */}
       {currentStep === 1 && (
         <StepInfoBasica onNext={handleStep1} defaultValues={formData.step1} />
       )}
       {currentStep === 2 && (
-        <StepStartup onNext={handleStep2} defaultValues={formData.step2} />
+        <StepStartup onNext={handleStep2} onBack={() => setCurrentStep(1)} defaultValues={formData.step2} />
       )}
       {currentStep === 3 && (
         <StepBusiness
           onNext={handleStep3}
+          onBack={() => setCurrentStep(2)}
           defaultValues={formData.step3}
           hasRevenue={!!formData.step2?.current_revenue}
           stage={formData.step2?.stage ?? ""}
@@ -226,6 +214,7 @@ export function ApplicationForm() {
       {currentStep === 4 && (
         <StepTeam
           onNext={handleStep4}
+          onBack={() => setCurrentStep(3)}
           defaultValues={formData.step4 ? { members: formData.step4 } : undefined}
           founderMember={formData.step1 ? {
             member_name: formData.step1.founder_name,
@@ -234,11 +223,12 @@ export function ApplicationForm() {
         />
       )}
       {currentStep === 5 && (
-        <StepCorporate onNext={handleStep5} defaultValues={formData.step5} />
+        <StepCorporate onNext={handleStep5} onBack={() => setCurrentStep(4)} defaultValues={formData.step5} />
       )}
       {currentStep === 6 && (
         <StepRelationship
           onNext={handleStep6}
+          onBack={() => setCurrentStep(5)}
           members={formData.step4 ?? []}
           defaultValues={formData.step6}
         />
